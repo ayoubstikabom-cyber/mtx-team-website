@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTX TEAM - Website & Bot Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- All previous styles remain the same --- */
+        :root {
+            --primary: #00d9ff; --secondary: #ff006e; --accent: #8338ec;
+            --background: #0a0e27; --card: #1a1f3a; --foreground: #e0e0ff;
+            --muted: #a0a8c2; --border: #2d3250; --error: #ff4d4d; --success: #00ff89;
+            --vip: #ffd700; /* Gold color for VIP */
+            --font-sans: 'Space Grotesk', sans-serif; --font-display: 'Orbitron', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-sans); background-color: var(--background); color: var(--foreground); overflow-x: hidden; }
+        .hidden { display: none !important; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-family: var(--font-sans); font-size: 1rem; cursor: pointer; transition: all 0.3s; font-weight: 600; text-decoration: none; display: inline-block; }
+        .btn-primary { background-color: var(--primary); color: var(--background); }
+        .btn-outline { border: 1px solid var(--primary); color: var(--primary); background: transparent; }
+        .btn:hover { box-shadow: 0 0 20px rgba(0, 217, 255, 0.5); }
+        .btn:disabled { background-color: var(--muted); color: var(--background); cursor: not-allowed; box-shadow: none; }
+        .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; cursor: pointer; }
+        .logo-icon { width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: bold; font-size: 1.25rem; color: var(--background); }
+        .logo-text { font-family: var(--font-display); font-weight: bold; font-size: 1.25rem; color: var(--primary); }
+        #main-page-content nav { position: fixed; top: 0; width: 100%; z-index: 50; background: rgba(10, 14, 39, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 1rem 0; }
+        #main-page-content nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 900; margin-bottom: 1.5rem; line-height: 1.2; }
+        .hero-gradient { background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .social-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+        .social-btn { padding: 0.6rem 1.2rem; border: 1px solid var(--muted); color: var(--muted); background: transparent; border-radius: 50px; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .social-btn:hover { color: var(--primary); border-color: var(--primary); }
+        footer { background: rgba(10, 14, 39, 0.5); border-top: 1px solid var(--border); padding: 3rem 0; backdrop-filter: blur(10px); }
+        .footer-bottom { padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--border); }
+        .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; cursor: pointer; }
+        .footer-links a:hover { color: var(--primary); }
+        .full-page-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 2.5rem; width: 100%; max-width: 500px; box-shadow: 0 0 40px rgba(0, 217, 255, 0.2); }
+        .card .logo { justify-content: center; margin-bottom: 1.5rem; }
+        .card h1 { font-family: var(--font-display); color: var(--primary); text-align: center; margin-bottom: 1.5rem; }
+        .card h2 { font-family: var(--font-display); color: var(--primary); margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+        .card p, .card li { color: var(--muted); line-height: 1.7; }
+        .card ul { list-style-position: inside; padding-right: 1rem; }
+        .input-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: var(--muted); }
+        input, select { width: 100%; padding: 0.75rem; background: var(--background); border: 1px solid var(--border); border-radius: 8px; color: var(--foreground); }
+        #error-message, #user-login-error, #admin-error-message { color: var(--error); text-align: center; min-height: 1.2em; }
+        .user-card { background: var(--background); padding: 1rem; border-radius: 8px; border-left: 4px; border-left-style: solid; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .user-card.type-vip { border-color: var(--vip); }
+        .user-card.type-free { border-color: var(--muted); }
+        .user-card.type-admin { border-color: var(--secondary); }
+        #bot-page { padding-top: 80px; }
+        .bot-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: var(--card); border-bottom: 1px solid var(--border); }
+        .bot-header .user-info { font-size: 1.1rem; }
+        .bot-header .user-info .vip-badge { color: var(--vip); font-weight: bold; }
+        .bot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; padding: 2rem; }
+        .command-card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; }
+        .command-card h3 { font-family: var(--font-display); color: var(--foreground); margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .command-card .vip-tag { font-size: 0.7rem; color: var(--background); background-color: var(--vip); padding: 2px 6px; border-radius: 4px; }
+        .command-card .input-group { display: flex; gap: 0.5rem; }
+        .command-card .input-group input { flex-grow: 1; }
+        #console { background: #000; border: 1px solid var(--border); border-radius: 8px; margin: 0 2rem 2rem 2rem; padding: 1rem; height: 150px; overflow-y: auto; font-family: monospace; font-size: 0.9rem; }
+        #console .log { margin-bottom: 0.5rem; white-space: pre-wrap; word-wrap: break-word; }
+        #console .log.success { color: var(--success); }
+        #console .log.error { color: var(--error); }
+        #console .log.info { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <!-- Main Page Content -->
+    <div id="main-page-content">
+        <nav>
+            <div class="container">
+                <div class="logo" id="logo-to-home"><div class="logo-icon">M</div><div class="logo-text">MTX SX TEAM</div></div>
+                <div>
+                    <a href="#" id="user-login-btn" class="btn btn-primary" style="margin-left: 1rem;">دخول المستخدم</a>
+                    <a href="#" id="admin-login-btn" class="btn btn-outline">دخول المسؤول</a>
+                </div>
+            </div>
+        </nav>
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h1><span class="hero-gradient">MTX SX TEAM</span><br>Innovation Unleashed</h1>
+                    <div class="social-buttons">
+                        <a href="https://youtube.com/@tzx_team" target="_blank" class="btn social-btn">يوتيوب</a>
+                        <a href="https://t.me/T_z_X_team" target="_blank" class="btn social-btn">قناة تليجرام</a>
+                        <a href="https://t.me/noseyrobot" target="_blank" class="btn social-btn">تواصل معنا</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="container">
+                <div class="footer-bottom">
+                    <p>© 2025 MTX SX TEAM. All rights reserved.</p>
+                    <div class="footer-links" style="display: flex; gap: 1.5rem;">
+                        <a id="show-privacy">Privacy Policy</a>
+                        <a id="show-terms">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- User Login Page -->
+    <div id="user-login-page" class="full-page-section hidden">
+        <div class="card">
+            <div class="logo"><div class="logo-icon">M</div><div class="logo-text">MTX SX TEAM</div></div>
+            <h1>دخول المستخدم</h1>
+            <form id="user-login-form">
+                <div class="input-group"><label for="user-username">اسم المستخدم (الكود)</label><input type="text" id="user-username" required></div>
+                <div class="input-group"><label for="user-password">كلمة المرور</label><input type="password" id="user-password" required></div>
+                <p id="user-login-error"></p>
+                <button type="submit" class="btn btn-primary">دخول</button>
+                <button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Login Page -->
+    <div id="admin-login-page" class="full-page-section hidden">
+        <div class="card">
+            <div class="logo"><div class="logo-icon">M</div><div class="logo-text">MTX SX TEAM</div></div>
+            <h1>دخول المسؤول</h1>
+            <form id="admin-login-form">
+                <div class="input-group"><label for="admin-username">اسم المستخدم</label><input type="text" id="admin-username" required></div>
+                <div class="input-group"><label for="admin-password">كلمة المرور</label><input type="password" id="admin-password" required></div>
+                <p id="admin-error-message"></p>
+                <button type="submit" class="btn btn-primary">دخول</button>
+                <button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Page -->
+    <div id="admin-dashboard-page" class="full-page-section hidden">
+        <div class="card" style="max-width: 600px;">
+            <div class="logo"><div class="logo-icon">M</div><div class="logo-text">MTX SX TEAM</div></div>
+            <h1>لوحة تحكم المسؤول</h1>
+            <form id="create-user-form">
+                <div class="input-group"><label for="new-username">اسم المستخدم الجديد</label><input type="text" id="new-username" required></div>
+                <div class="input-group"><label for="new-password">كلمة المرور</label><input type="text" id="new-password" required></div>
+                <div class="input-group"><label for="user-type">نوع المستخدم</label><select id="user-type"><option value="free">Free</option><option value="vip">VIP</option><option value="admin">Admin</option></select></div>
+                <div class="input-group"><label for="expiry-period">مدة الصلاحية</label><select id="expiry-period"><option value="1">1 يوم</option><option value="7">7 أيام</option><option value="15">15 يوم</option><option value="30">30 يوم</option></select></div>
+                <button type="submit" class="btn btn-primary">إنشاء مستخدم</button>
+            </form>
+            <h2>المستخدمون النشطون</h2>
+            <div id="user-list"><p>لا يوجد مستخدمون حالياً.</p></div>
+            <button type="button" class="btn btn-outline back-to-home" style="margin-top: 2rem;">العودة للصفحة الرئيسية</button>
+        </div>
+    </div>
+
+    <!-- BOT Page -->
+    <div id="bot-page" class="hidden">
+        <header class="bot-header">
+            <div class="logo"><div class="logo-icon">M</div><div class="logo-text">FREE FIRE BOT</div></div>
+            <div class="user-info">أهلاً, <span id="bot-username"></span> <span id="vip-badge-header"></span></div>
+            <button class="btn btn-outline back-to-home">خروج</button>
+        </header>
+        <div id="console"></div>
+        <div class="bot-grid">
+            <div class="command-card"><h3 class="command-title">فحص الحساب</h3><div class="input-group"><input type="text" placeholder="ID الحساب"><button class="btn btn-primary cmd-btn" data-command="check_ban">فحص</button></div></div>
+            <div class="command-card"><h3 class="command-title">زيارة بروفايل</h3><div class="input-group"><input type="text" placeholder="ID الحساب"><button class="btn btn-primary cmd-btn" data-command="visit_profile">زيارة</button></div></div>
+            <div class="command-card"><h3 class="command-title">تطبيق الطقم (Outfit)</h3><div class="input-group"><input type="text" placeholder="ID الحساب"><button class="btn btn-primary cmd-btn" data-command="outfit">تطبيق</button></div></div>
+            <div class="command-card"><h3 class="command-title">معلومات الحساب</h3><div class="input-group"><input type="text" placeholder="ID الحساب"><button class="btn btn-primary cmd-btn" data-command="account_info">عرض</button></div></div>
+            <div class="command-card"><h3 class="command-title">دعوة سبام</h3><div class="input-group"><input type="text" placeholder="ID الحساب"><button class="btn btn-primary cmd-btn" data-command="spam_invite">إرسال</button></div></div>
+            <div class="command-card"><h3 class="command-title">دخول سبام للروم</h3><div class="input-group"><input type="text" placeholder="ID الروم"><button class="btn btn-primary cmd-btn" data-command="spam_join_rom">دخول</button></div></div>
+            <div class="command-card"><h3 class="command-title">إضافة بوت للحساب <span class="vip-tag">VIP</span></h3><div class="input-group"><button class="btn btn-primary cmd-btn vip-feature" data-command="add_bot">إضافة</button></div></div>
+            <div class="command-card"><h3 class="command-title">إزالة بوت من الحساب <span class="vip-tag">VIP</span></h3><div class="input-group"><button class="btn btn-primary cmd-btn vip-feature" data-command="remove_bot">إزالة</button></div></div>
+            <div class="command-card"><h3 class="command-title">لايكات (حد أقصى 200) <span class="vip-tag">VIP</span></h3><div class="input-group"><input type="number" min="1" max="200" placeholder="العدد"><button class="btn btn-primary cmd-btn vip-feature" data-command="send_likes">إرسال</button></div></div>
+            <div class="command-card"><h3 class="command-title">استدعاء الأشباح <span class="vip-tag">VIP</span></h3><div class="input-group"><input type="text" placeholder="Team Code"><button class="btn btn-primary cmd-btn vip-feature" data-command="ghost_invite">استدعاء</button></div></div>
+            <div class="command-card"><h3 class="command-title">إرسال رقصة <span class="vip-tag">VIP</span></h3><div class="input-group"><input type="text" placeholder="ID الرقصة"><button class="btn btn-primary cmd-btn vip-feature" data-command="send_emote">إرسال</button></div></div>
+            <div class="command-card"><h3 class="command-title">إضافة سكن EVO <span class="vip-tag">VIP</span></h3><div class="input-group"><button class="btn btn-primary cmd-btn vip-feature" data-command="add_evo">إضافة</button></div></div>
+            <div class="command-card"><h3 class="command-title">إضافة سكن Criminal Gold <span class="vip-tag">VIP</span></h3><div class="input-group"><button class="btn btn-primary cmd-btn vip-feature" data-command="add_criminal">إضافة</button></div></div>
+            <div class="command-card"><h3 class="command-title">إضافة أفاتار <span class="vip-tag">VIP</span></h3><div class="input-group"><button class="btn btn-primary cmd-btn vip-feature" data-command="add_avatar">إضافة</button></div></div>
+            <div class="command-card"><h3 class="command-title">إضافة ذهب <span class="vip-tag">VIP</span></h3><div class="input-group"><input type="number" min="1000" placeholder="الكمية"><button class="btn btn-primary cmd-btn vip-feature" data-command="add_gold">إضافة</button></div></div>
+            <div class="command-card"><h3 class="command-title">إضافة جواهر <span class="vip-tag">VIP</span></h3><div class="input-group"><input type="number" min="100" placeholder="الكمية"><button class="btn btn-primary cmd-btn vip-feature" data-command="add_diamonds">إضافة</button></div></div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy & Terms of Service Pages -->
+    <div id="privacy-page" class="full-page-section hidden"><div class="card" style="max-width: 800px;"><h1>سياسة الخصوصية</h1><p>أهلاً بك في MTX SX TEAM. نحن نأخذ خصوصيتك على محمل الجد...</p><button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button></div></div>
+    <div id="terms-page" class="full-page-section hidden"><div class="card" style="max-width: 800px;"><h1>شروط الخدمة</h1><p>من خلال الوصول إلى موقع MTX SX TEAM واستخدامه، فإنك توافق على الالتزام بهذه الشروط...</p><button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button></div></div>
+
+    <script>
+        // --- All JavaScript logic remains the same ---
+        const mainPage = document.getElementById('main-page-content');
+        const userLoginPage = document.getElementById('user-login-page');
+        const adminLoginPage = document.getElementById('admin-login-page');
+        const adminDashboardPage = document.getElementById('admin-dashboard-page');
+        const botPage = document.getElementById('bot-page');
+        const privacyPage = document.getElementById('privacy-page');
+        const termsPage = document.getElementById('terms-page');
+        const allPages = [mainPage, userLoginPage, adminLoginPage, adminDashboardPage, botPage, privacyPage, termsPage];
+        
+        const userLoginBtn = document.getElementById('user-login-btn');
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        const backToHomeBtns = document.querySelectorAll('.back-to-home');
+        const logoToHomeBtn = document.getElementById('logo-to-home');
+        const showPrivacyBtn = document.getElementById('show-privacy');
+        const showTermsBtn = document.getElementById('show-terms');
+
+        const userLoginForm = document.getElementById('user-login-form');
+        const adminLoginForm = document.getElementById('admin-login-form');
+        const createUserForm = document.getElementById('create-user-form');
+        const userListDiv = document.getElementById('user-list');
+        const adminErrorMessage = document.getElementById('admin-error-message');
+        const userLoginErrorMessage = document.getElementById('user-login-error');
+        const consoleDiv = document.getElementById('console');
+        let users_db = [];
+        let currentUser = null;
+
+        function showPage(pageToShow) {
+            allPages.forEach(page => page.classList.add('hidden'));
+            pageToShow.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+        userLoginBtn.addEventListener('click', (e) => { e.preventDefault(); showPage(userLoginPage); });
+        adminLoginBtn.addEventListener('click', (e) => { e.preventDefault(); showPage(adminLoginPage); });
+        logoToHomeBtn.addEventListener('click', () => showPage(mainPage));
+        showPrivacyBtn.addEventListener('click', () => showPage(privacyPage));
+        showTermsBtn.addEventListener('click', () => showPage(termsPage));
+        backToHomeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentUser = null;
+                showPage(mainPage);
+            });
+        });
+
+        adminLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (document.getElementById('admin-username').value === 'ayoub' && document.getElementById('admin-password').value === 'MTX') {
+                showPage(adminDashboardPage);
+                adminLoginForm.reset();
+                adminErrorMessage.textContent = '';
+            } else {
+                adminErrorMessage.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+            }
+        });
+
+        userLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('user-username').value;
+            const password = document.getElementById('user-password').value;
+            const foundUser = users_db.find(user => user.username === username && user.password === password);
+            if (foundUser) {
+                currentUser = foundUser;
+                setupBotPage(currentUser);
+                showPage(botPage);
+                userLoginForm.reset();
+                userLoginErrorMessage.textContent = '';
+            } else {
+                userLoginErrorMessage.textContent = 'الكود أو كلمة المرور غير صحيحة.';
+            }
+        });
+
+        function renderUsers() {
+            userListDiv.innerHTML = '';
+            if (users_db.length === 0) { userListDiv.innerHTML = '<p>لا يوجد مستخدمون حالياً.</p>'; return; }
+            users_db.forEach((user, index) => {
+                const userCard = document.createElement('div');
+                userCard.className = `user-card type-${user.type}`;
+                userCard.innerHTML = `<div>${user.username} / ${user.password} (${user.type})</div><button class="btn-delete" data-index="${index}">&times;</button>`;
+                userListDiv.appendChild(userCard);
+            });
+        }
+
+        createUserForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            users_db.push({
+                username: document.getElementById('new-username').value,
+                password: document.getElementById('new-password').value,
+                type: document.getElementById('user-type').value,
+                expiryPeriod: parseInt(document.getElementById('expiry-period').value)
+            });
+            renderUsers();
+            createUserForm.reset();
+        });
+        
+        userListDiv.addEventListener('click', (e) => {
+            if (e.target && e.target.classList.contains('btn-delete')) {
+                users_db.splice(parseInt(e.target.getAttribute('data-index')), 1);
+                renderUsers();
+            }
+        });
+
+        function setupBotPage(user) {
+            document.getElementById('bot-username').textContent = user.username;
+            const vipBadge = document.getElementById('vip-badge-header');
+            const vipFeatures = document.querySelectorAll('.vip-feature');
+            if (user.type === 'vip' || user.type === 'admin') {
+                vipBadge.textContent = 'VIP';
+                vipBadge.className = 'vip-badge';
+                vipFeatures.forEach(feature => feature.disabled = false);
+            } else {
+                vipBadge.textContent = '';
+                vipFeatures.forEach(feature => feature.disabled = true);
+            }
+            consoleDiv.innerHTML = '';
+            logToConsole('تم تسجيل الدخول بنجاح. مرحباً بك.');
+        }
+
+        function logToConsole(message, type = 'log') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log ${type}`;
+            logEntry.textContent = `> ${message}`;
+            consoleDiv.appendChild(logEntry);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
+        async function logCommandResult(command, inputValue) {
+            const requiredCommands = ['visit_profile', 'outfit', 'check_ban', 'account_info'];
+            if (requiredCommands.includes(command) && !inputValue) {
+                logToConsole('خطأ: الرجاء إدخال ID الحساب.', 'error');
+                return;
+            }
+
+            let apiUrl = '';
+            let commandName = '';
+
+            if (command === 'visit_profile') {
+                apiUrl = `https://api-visit-alliff-v2.vercel.app/visit?uid=${inputValue}`;
+                commandName = 'زيارة';
+            } else if (command === 'outfit') {
+                apiUrl = `http://85.215.131.70:14151/outfit?uid=${inputValue}`;
+                commandName = 'تطبيق الطقم';
+            } else if (command === 'check_ban') {
+                apiUrl = `http://87.106.82.84:13522/check?uid=${inputValue}`;
+                commandName = 'فحص الحساب';
+            } else if (command === 'account_info') {
+                apiUrl = `http://217.154.239.23:13984/info=${inputValue}`;
+                commandName = 'معلومات الحساب';
+            }
+
+            if (apiUrl) {
+                logToConsole(`جاري إرسال طلب ${commandName} إلى ID: ${inputValue}...`, 'info');
+                try {
+                    const response = await fetch(apiUrl);
+                    const responseText = await response.text();
+                    
+                    if (response.ok) {
+                        logToConsole(`API Response: ${responseText || 'تم إرسال الطلب بنجاح.'}`, 'success');
+                    } else {
+                        logToConsole(`API Error: ${responseText || 'حدث خطأ غير متوقع.'}`, 'error');
+                    }
+                } catch (error) {
+                    logToConsole('فشل الاتصال بالـ API. قد يكون الخادم متوقفاً أو هناك مشكلة في الشبكة.', 'error');
+                    console.error('API Fetch Error:', error);
+                }
+            } else {
+                logToConsole(`تنفيذ الأمر: ${command} بقيمة: ${inputValue}`, 'success');
+            }
+        }
+
+        document.querySelector('.bot-grid').addEventListener('click', (e) => {
+            if (e.target && e.target.classList.contains('cmd-btn')) {
+                const button = e.target;
+                const command = button.dataset.command;
+                const input = button.closest('.input-group').querySelector('input');
+                const inputValue = input ? input.value : 'N/A';
+
+                if (button.disabled) {
+                    logToConsole('خطأ: هذا الأمر مخصص لمستخدمي VIP فقط.', 'error');
+                    return;
+                }
+                
+                logCommandResult(command, inputValue);
+
+                if (input) input.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
