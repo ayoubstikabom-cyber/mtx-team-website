@@ -427,3 +427,79 @@
     </script>
 </body>
 </html>
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem; /* تقليل الحشو على الجوانب */
+            }
+
+            /* تعديل شريط التنقل */
+            #main-page-content nav .container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            #main-page-content nav {
+                padding: 0.5rem 0;
+            }
+            #main-page-content nav div:last-child {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+            #main-page-content nav div:last-child a {
+                flex-grow: 1;
+                text-align: center;
+                margin: 0 0.25rem !important;
+            }
+
+            /* تعديل قسم البطل (Hero) */
+            .hero {
+                padding-top: 100px; /* لإفساح المجال لشريط التنقل */
+            }
+            .hero h1 {
+                font-size: clamp(2rem, 10vw, 4rem); /* تصغير حجم الخط */
+            }
+            .social-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .social-btn {
+                width: 100%;
+            }
+
+            /* تعديل البطاقات (Cards) */
+            .card {
+                padding: 1.5rem;
+                max-width: 100%;
+            }
+
+            /* تعديل شبكة الأوامر (Bot Grid) */
+            .bot-grid {
+                grid-template-columns: 1fr; /* عمود واحد فقط */
+                padding: 1rem;
+            }
+            .command-card {
+                padding: 1rem;
+            }
+            .command-card .input-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .command-card .input-group button {
+                width: 100%;
+            }
+
+            /* تعديل تذييل الصفحة (Footer) */
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem !important;
+            }
+        }
+    </style>
+</head>
