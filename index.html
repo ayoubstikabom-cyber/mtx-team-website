@@ -56,13 +56,13 @@
         .user-card.type-vip { 
             border-color: var(--vip); 
             /* 3D Effect for VIP */
-            box-shadow: 0 0 15px var(--vip), 0 0 30px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 20px var(--vip), 0 0 40px rgba(255, 215, 0, 0.7), 0 5px 15px rgba(0, 0, 0, 0.5);
             transform: perspective(1000px) rotateX(2deg) scale(1.02);
             transition: all 0.3s ease-in-out;
         }
         .user-card.type-vip:hover {
             transform: perspective(1000px) rotateX(0deg) scale(1.05);
-            box-shadow: 0 0 20px var(--vip), 0 0 40px rgba(255, 215, 0, 0.7);
+            box-shadow: 0 0 30px var(--vip), 0 0 60px rgba(255, 215, 0, 0.9), 0 10px 20px rgba(0, 0, 0, 0.7);
         }
         .user-card.type-free { border-color: var(--muted); }
         .user-card.type-admin { border-color: var(--secondary); }
@@ -78,18 +78,19 @@
             transition: transform 0.3s ease-in-out;
         }
         .command-card:has(.vip-tag) {
+            border: 2px solid var(--vip); /* زيادة سمك الحدود */
             border-color: var(--vip);
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5), 0 5px 10px rgba(0, 0, 0, 0.3); /* ظل خفيف */
         }
         .command-card:has(.vip-tag):hover {
             transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 5px 25px rgba(255, 215, 0, 0.7), 0 10px 20px rgba(0, 0, 0, 0.5);
         }
         .command-card h3 { font-family: var(--font-display); color: var(--foreground); margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
         .command-card .vip-tag { 
             font-size: 0.7rem; color: var(--background); background-color: var(--vip); padding: 2px 6px; border-radius: 4px; 
             /* 3D Effect for VIP Tag */
-            box-shadow: 0 2px 5px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.7);
             transform: translateZ(10px);
         }
         .command-card .input-group { display: flex; gap: 0.5rem; }
