@@ -246,6 +246,17 @@
         const userLoginErrorMessage = document.getElementById('user-login-error');
         const consoleDiv = document.getElementById('console');
         let users_db = [];
+        
+        function saveUsers() {
+            localStorage.setItem('mtx_users_db', JSON.stringify(users_db));
+        }
+
+        function loadUsers() {
+            const storedUsers = localStorage.getItem('mtx_users_db');
+            if (storedUsers) {
+                users_db = JSON.parse(storedUsers);
+            }
+        }
         let currentUser = null;
 
         function showPage(pageToShow) {
@@ -311,18 +322,24 @@
                 type: document.getElementById('user-type').value,
                 expiryPeriod: parseInt(document.getElementById('expiry-period').value)
             });
+            saveUsers(); // Save after adding
             renderUsers();
             createUserForm.reset();
         });
         
         userListDiv.addEventListener('click', (e) => {
-            if (e.target && e.target.classList.contains('btn-delete')) {
-                users_db.splice(parseInt(e.target.getAttribute('data-index')), 1);
-                renderUsers();
-            }
-        });
-
-        function setupBotPage(user) {
+	            if (e.target && e.target.classList.contains('btn-delete')) {
+	                users_db.splice(parseInt(e.target.getAttribute('data-index')), 1);
+	                saveUsers(); // Save after deleting
+	                renderUsers();
+	            }
+	        });
+	
+	        // Initial load of users and render
+	        loadUsers();
+	        renderUsers();
+	
+	        function setupBotPage(user) {
             document.getElementById('bot-username').textContent = user.username;
             const vipBadge = document.getElementById('vip-badge-header');
             const vipFeatures = document.querySelectorAll('.vip-feature');
