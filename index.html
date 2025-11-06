@@ -53,7 +53,17 @@
         input, select { width: 100%; padding: 0.75rem; background: var(--background); border: 1px solid var(--border); border-radius: 8px; color: var(--foreground); }
         #error-message, #user-login-error, #admin-error-message { color: var(--error); text-align: center; min-height: 1.2em; }
         .user-card { background: var(--background); padding: 1rem; border-radius: 8px; border-left: 4px; border-left-style: solid; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
-        .user-card.type-vip { border-color: var(--vip); }
+        .user-card.type-vip { 
+            border-color: var(--vip); 
+            /* 3D Effect for VIP */
+            box-shadow: 0 0 15px var(--vip), 0 0 30px rgba(255, 215, 0, 0.5);
+            transform: perspective(1000px) rotateX(2deg) scale(1.02);
+            transition: all 0.3s ease-in-out;
+        }
+        .user-card.type-vip:hover {
+            transform: perspective(1000px) rotateX(0deg) scale(1.05);
+            box-shadow: 0 0 20px var(--vip), 0 0 40px rgba(255, 215, 0, 0.7);
+        }
         .user-card.type-free { border-color: var(--muted); }
         .user-card.type-admin { border-color: var(--secondary); }
         #bot-page { padding-top: 80px; }
@@ -61,9 +71,27 @@
         .bot-header .user-info { font-size: 1.1rem; }
         .bot-header .user-info .vip-badge { color: var(--vip); font-weight: bold; }
         .bot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; padding: 2rem; }
-        .command-card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; }
+        .command-card { 
+            background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; 
+            /* Enable 3D context for children */
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease-in-out;
+        }
+        .command-card:has(.vip-tag) {
+            border-color: var(--vip);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        .command-card:has(.vip-tag):hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+        }
         .command-card h3 { font-family: var(--font-display); color: var(--foreground); margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
-        .command-card .vip-tag { font-size: 0.7rem; color: var(--background); background-color: var(--vip); padding: 2px 6px; border-radius: 4px; }
+        .command-card .vip-tag { 
+            font-size: 0.7rem; color: var(--background); background-color: var(--vip); padding: 2px 6px; border-radius: 4px; 
+            /* 3D Effect for VIP Tag */
+            box-shadow: 0 2px 5px rgba(255, 215, 0, 0.5);
+            transform: translateZ(10px);
+        }
         .command-card .input-group { display: flex; gap: 0.5rem; }
         .command-card .input-group input { flex-grow: 1; }
         #console { background: #000; border: 1px solid var(--border); border-radius: 8px; margin: 0 2rem 2rem 2rem; padding: 1rem; height: 150px; overflow-y: auto; font-family: monospace; font-size: 0.9rem; }
