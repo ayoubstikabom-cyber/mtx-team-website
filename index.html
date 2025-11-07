@@ -110,8 +110,8 @@
             <div class="container">
                 <div class="logo" id="logo-to-home"><div class="logo-icon">M</div><div class="logo-text">MTX SX TEAM</div></div>
                 <div>
-                    <a href="#" id="user-login-btn" class="btn btn-primary" style="margin-left: 1rem;">دخول المستخدم</a>
-                    <a href="#" id="admin-login-btn" class="btn btn-outline">دخول المسؤول</a>
+	                    <a href="#" id="login-btn" class="btn btn-primary">تسجيل الدخول</a>
+	                    <a href="#" id="admin-dashboard-btn" class="btn btn-outline hidden">لوحة التحكم</a>
                 </div>
             </div>
         </nav>
@@ -140,35 +140,20 @@
         </footer>
     </div>
 
-    <!-- User Login Page -->
-    <div id="user-login-page" class="full-page-section hidden">
-        <div class="card">
-            <div class="logo"><div class="logo-icon">M</div><div class="logo-text">MTX SX TEAM</div></div>
-            <h1>دخول المستخدم</h1>
-            <form id="user-login-form">
-                <div class="input-group"><label for="user-username">اسم المستخدم (الكود)</label><input type="text" id="user-username" required></div>
-                <div class="input-group"><label for="user-password">كلمة المرور</label><input type="password" id="user-password" required></div>
-                <p id="user-login-error"></p>
-                <button type="submit" class="btn btn-primary">دخول</button>
-                <button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Admin Login Page -->
-    <div id="admin-login-page" class="full-page-section hidden">
-        <div class="card">
-            <div class="logo"><div class="logo-icon">M</div><div class="logo-text">MTX SX TEAM</div></div>
-            <h1>دخول المسؤول</h1>
-            <form id="admin-login-form">
-                <div class="input-group"><label for="admin-username">اسم المستخدم</label><input type="text" id="admin-username" required></div>
-                <div class="input-group"><label for="admin-password">كلمة المرور</label><input type="password" id="admin-password" required></div>
-                <p id="admin-error-message"></p>
-                <button type="submit" class="btn btn-primary">دخول</button>
-                <button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button>
-            </form>
-        </div>
-    </div>
+	    <!-- Login Page (Combined) -->
+	    <div id="login-page" class="full-page-section hidden">
+	        <div class="card">
+	            <div class="logo"><div class="logo-icon">M</div><div class="logo-text">MTX SX TEAM</div></div>
+	            <h1>تسجيل الدخول</h1>
+	            <form id="user-login-form">
+	                <div class="input-group"><label for="user-username">اسم المستخدم (الكود)</label><input type="text" id="user-username" required></div>
+	                <div class="input-group"><label for="user-password">كلمة المرور</label><input type="password" id="user-password" required></div>
+	                <p id="user-login-error"></p>
+	                <button type="submit" class="btn btn-primary">دخول</button>
+	                <button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button>
+	            </form>
+	        </div>
+	    </div>
 
     <!-- Admin Dashboard Page -->
     <div id="admin-dashboard-page" class="full-page-section hidden">
@@ -222,24 +207,20 @@
 
     <script>
         // --- All JavaScript logic remains the same ---
-        const mainPage = document.getElementById('main-page-content');
-        const userLoginPage = document.getElementById('user-login-page');
-        const adminLoginPage = document.getElementById('admin-login-page');
-        const adminDashboardPage = document.getElementById('admin-dashboard-page');
-        const botPage = document.getElementById('bot-page');
-        const privacyPage = document.getElementById('privacy-page');
-        const termsPage = document.getElementById('terms-page');
-        const allPages = [mainPage, userLoginPage, adminLoginPage, adminDashboardPage, botPage, privacyPage, termsPage];
-        
-        const userLoginBtn = document.getElementById('user-login-btn');
-        const adminLoginBtn = document.getElementById('admin-login-btn');
-        const backToHomeBtns = document.querySelectorAll('.back-to-home');
-        const logoToHomeBtn = document.getElementById('logo-to-home');
-        const showPrivacyBtn = document.getElementById('show-privacy');
-        const showTermsBtn = document.getElementById('show-terms');
-
-        const userLoginForm = document.getElementById('user-login-form');
-        const adminLoginForm = document.getElementById('admin-login-form');
+	        const mainPage = document.getElementById('main-page-content');
+	        const loginPage = document.getElementById('login-page'); // Combined login page
+	        const adminDashboardPage = document.getElementById('admin-dashboard-page');
+	        const botPage = document.getElementById('bot-page');
+	        const privacyPage = document.getElementById('privacy-page');
+	        const termsPage = document.getElementById('terms-page');
+	        const allPages = [mainPage, loginPage, adminDashboardPage, botPage, privacyPage, termsPage];
+	        
+	        const lo	        const backToHomeBtns = document.querySelectorAll('.back-to-home');
+	        const logoToHomeBtn = document.getElementById('logo-to-home');
+	        const showPrivacyBtn = document.getElementById('show-privacy');
+	        const showTermsBtn = document.getElementById('show-terms');
+	
+	        const userLoginForm = document.getElementById('user-login-form'); // Now used for all logins
         const createUserForm = document.getElementById('create-user-form');
         const userListDiv = document.getElementById('user-list');
         const adminErrorMessage = document.getElementById('admin-error-message');
@@ -264,44 +245,47 @@
             pageToShow.classList.remove('hidden');
             window.scrollTo(0, 0);
         }
-        userLoginBtn.addEventListener('click', (e) => { e.preventDefault(); showPage(userLoginPage); });
-        adminLoginBtn.addEventListener('click', (e) => { e.preventDefault(); showPage(adminLoginPage); });
-        logoToHomeBtn.addEventListener('click', () => showPage(mainPage));
+	        loginBtn.addEventListener('click', (e) => { e.preventDefault(); showPage(loginPage); });
+	        adminDashboardBtn.addEventListener('click', (e) => { e.preventDefault(); showPage(adminDashboardPage); });
+	        logoToHomeBtn.addEventListener('click', () => showPage(mainPage));
         showPrivacyBtn.addEventListener('click', () => showPage(privacyPage));
         showTermsBtn.addEventListener('click', () => showPage(termsPage));
-        backToHomeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                currentUser = null;
-                showPage(mainPage);
-            });
-        });
-
-        adminLoginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (document.getElementById('admin-username').value === 'ayoub' && document.getElementById('admin-password').value === 'MTX') {
-                showPage(adminDashboardPage);
-                adminLoginForm.reset();
-                adminErrorMessage.textContent = '';
-            } else {
-                adminErrorMessage.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
-            }
-        });
-
-        userLoginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('user-username').value;
-            const password = document.getElementById('user-password').value;
-            const foundUser = users_db.find(user => user.username === username && user.password === password);
-            if (foundUser) {
-                currentUser = foundUser;
-                setupBotPage(currentUser);
-                showPage(botPage);
-                userLoginForm.reset();
-                userLoginErrorMessage.textContent = '';
-            } else {
-                userLoginErrorMessage.textContent = 'الكود أو كلمة المرور غير صحيحة.';
-            }
-        });
+	        backToHomeBtns.forEach(btn => {
+	            btn.addEventListener('click', () => {
+	                currentUser = null;
+	                adminDashboardBtn.classList.add('hidden'); // Hide admin button on logout
+	                showPage(mainPage);
+	            });
+	        });
+	
+	        userLoginForm.addEventListener('submit', (e) => {
+	            e.preventDefault();
+	            const username = document.getElementById('user-username').value;
+	            const password = document.getElementById('user-password').value;
+	
+	            // Admin Login Logic
+	            if (username === 'ayoub' && password === 'MTX') {
+	                currentUser = { username: 'ayoub', type: 'admin' };
+	                adminDashboardBtn.classList.remove('hidden'); // Show admin button
+	                showPage(adminDashboardPage);
+	                userLoginForm.reset();
+	                userLoginErrorMessage.textContent = '';
+	                return;
+	            }
+	
+	            // Regular User Login Logic
+	            const foundUser = users_db.find(user => user.username === username && user.password === password);
+	            if (foundUser) {
+	                currentUser = foundUser;
+	                adminDashboardBtn.classList.add('hidden'); // Hide admin button for regular users
+	                setupBotPage(currentUser);
+	                showPage(botPage);
+	                userLoginForm.reset();
+	                userLoginErrorMessage.textContent = '';
+	            } else {
+	                userLoginErrorMessage.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+	            }
+	        });
 
         function renderUsers() {
             userListDiv.innerHTML = '';
