@@ -201,9 +201,9 @@
         </div>
     </div>
 
-    <!-- Privacy Policy & Terms of Service Pages -->
-    <div id="privacy-page" class="full-page-section hidden"><div class="card" style="max-width: 800px;"><h1>سياسة الخصوصية</h1><p>أهلاً بك في MTX SX TEAM. نحن نأخذ خصوصيتك على محمل الجد...</p><button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button></div></div>
-    <div id="terms-page" class="full-page-section hidden"><div class="card" style="max-width: 800px;"><h1>شروط الخدمة</h1><p>من خلال الوصول إلى موقع MTX SX TEAM واستخدامه، فإنك توافق على الالتزام بهذه الشروط...</p><button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button></div></div>
+	    <!-- Privacy Policy & Terms of Service Pages -->
+	    <div id="privacy-page" class="full-page-section hidden"><div class="card" style="max-width: 800px;"><h1>سياسة الخصوصية</h1><p>أهلاً بك في MTX SX TEAM. نحن نأخذ خصوصيتك على محمل الجد...</p><button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button></div></div>
+	    <div id="terms-page" class="full-page-section hidden"><div class="card" style="max-width: 800px;"><h1>شروط الخدمة</h1><p>من خلال الوصول إلى موقع MTX SX TEAM واستخدامه، فإنك توافق على الالتزام بهذه الشروط...</p><button type="button" class="btn btn-outline back-to-home" style="margin-top: 1rem;">العودة</button></div></div>
 
     <script>
         // --- All JavaScript logic remains the same ---
@@ -228,18 +228,31 @@
         const adminErrorMessage = document.getElementById('admin-error-message');
         const userLoginErrorMessage = document.getElementById('user-login-error');
         const consoleDiv = document.getElementById('console');
-        let users_db = [];
+	        // Hardcoded users for cross-device access
+	        const HARDCODED_USERS = [
+	            { username: 'user1', password: '123', type: 'free', expiryPeriod: 30 },
+	            { username: 'vipuser', password: 'vip', type: 'vip', expiryPeriod: 30 },
+	            { username: 'test', password: 'test', type: 'free', expiryPeriod: 30 },
+	        ];
+	        
+	        let users_db = [];
         
         function saveUsers() {
             localStorage.setItem('mtx_users_db', JSON.stringify(users_db));
         }
 
-        function loadUsers() {
-            const storedUsers = localStorage.getItem('mtx_users_db');
-            if (storedUsers) {
-                users_db = JSON.parse(storedUsers);
-            }
-        }
+	        function loadUsers() {
+	            const storedUsers = localStorage.getItem('mtx_users_db');
+	            if (storedUsers) {
+	                users_db = JSON.parse(storedUsers);
+	            }
+	            // Merge hardcoded users with local storage users
+	            HARDCODED_USERS.forEach(hUser => {
+	                if (!users_db.some(u => u.username === hUser.username)) {
+	                    users_db.push(hUser);
+	                }
+	            });
+	        }
         let currentUser = null;
 
         function showPage(pageToShow) {
